@@ -7,12 +7,19 @@ trigger:
 - main
 
 pool:
-  vmImage: ubuntu-latest
+  name: 'work for agent'
 
 variables:
   buildConfiguration: 'Release'
 
-steps:
-- script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
+jobs:
+- job: Build
+  pool:
+    name: 'agent for work'  # Replace with your agent pool name
+  steps:
+  - task: UseDotNet@2
+    inputs:
+      packageType: 'sdk'
+      version: '6.x'
+      installationPath: $(Agent.ToolsDirectory)/dotnet
   
